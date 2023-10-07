@@ -9,3 +9,6 @@ A simple java project written to parse JSON text.
 any character outside of JSON alphabet is found
 3. In Parser, we will try to build the parse tree (this is tentative and is not finalized yet)
 and if we are able to build one, then the given text follows JSON constraints
+
+Use the below to write Automata for tokenizing the input into corresponding Token:
+https://www.json.org/json-en.html
