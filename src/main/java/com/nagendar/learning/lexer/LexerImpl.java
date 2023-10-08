@@ -37,6 +37,40 @@ public class LexerImpl implements Lexer {
 			}
 			return new Lexeme(DataType.STRING, sb.toString());
 		}
+		else if (c == 't') {
+			// check for true here
+			String trueString = "true";
+			int matchIndex = 1;
+			while (index < input.length()
+					&& matchIndex < trueString.length()
+					&& input.charAt(index) == trueString.charAt(matchIndex)) {
+				sb.append(input.charAt(index));
+				index++;
+				matchIndex++;
+			}
+			if (matchIndex >= trueString.length()) {
+				return new Lexeme(DataType.BOOLEAN, sb.toString());
+			}
+			return new Lexeme(DataType.NULL, null);
+			// throw an exception here
+		}
+		else if (c == 'f') {
+			// check for false
+			String falseString = "false";
+			int matchIndex = 1;
+			while (index < input.length()
+					&& matchIndex < falseString.length()
+					&& input.charAt(index) == falseString.charAt(matchIndex)) {
+				sb.append(input.charAt(index));
+				index++;
+				matchIndex++;
+			}
+			if (matchIndex >= falseString.length()) {
+				return new Lexeme(DataType.BOOLEAN, sb.toString());
+			}
+			return new Lexeme(DataType.NULL, null);
+			// throw an exception here
+		}
 		else if ((c >= '0' && c <= '9') || c == '-') {
 			// TODO: think how we are representing this number with special chars
 			while (index < input.length()
