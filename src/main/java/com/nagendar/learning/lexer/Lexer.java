@@ -6,5 +6,6 @@
 package com.nagendar.learning.lexer;
 
 public interface Lexer {
-	void tokenize(String input);
+	Object nextToken();
+	boolean hasToken();
 }
