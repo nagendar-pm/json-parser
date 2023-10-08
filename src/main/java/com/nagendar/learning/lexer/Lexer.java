@@ -6,6 +6,6 @@
 package com.nagendar.learning.lexer;
 
 public interface Lexer {
-	Object nextToken();
+	Lexeme nextToken();
 	boolean hasToken();
 }

@@ -5,12 +5,16 @@ package com.nagendar.learning;
  * @createdAt: 03/10/23 8:27 pm
  */
 
+import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.Lexer;
 import com.nagendar.learning.lexer.LexerImpl;
+import com.nagendar.learning.lexer.tokens.DataType;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
@@ -19,10 +23,12 @@ public class Main {
 		String fileContent = Files.readString(file);
 		System.out.println("fileContent = " + fileContent);
 		Lexer lexer = new LexerImpl(fileContent);
+		List<Lexeme> lexemes = new ArrayList<>();
 		while (lexer.hasToken()) {
-			Object token = lexer.nextToken();
-			if (token.equals("WHITE_SPACE")) continue;
-			System.out.println("Token: " + token);
+			Lexeme lexeme = lexer.nextToken();
+			if (lexeme.getTokenType() == DataType.WHITE_SPACE) continue;
+			lexemes.add(lexeme);
+			System.out.println(lexeme);
 		}
 	}
 }

@@ -1,6 +1,44 @@
 # json-parser
 A simple java project written to parse JSON text. 
 
+So far works looks something like below:
+```commandline
+fileContent = {
+    "key1" : "value1",
+    "key2" : "value2"
+    "key3" : {
+        "key31" : "value31"
+    }
+    "key4" : [123, 345.78, 13.45e90]
+}
+
+Lexeme {tokenType=LEFT_BRACE, value={}
+Lexeme {tokenType=STRING, value="key1"}
+Lexeme {tokenType=COLON, value=:}
+Lexeme {tokenType=STRING, value="value1"}
+Lexeme {tokenType=COMMA, value=,}
+Lexeme {tokenType=STRING, value="key2"}
+Lexeme {tokenType=COLON, value=:}
+Lexeme {tokenType=STRING, value="value2"}
+Lexeme {tokenType=STRING, value="key3"}
+Lexeme {tokenType=COLON, value=:}
+Lexeme {tokenType=LEFT_BRACE, value={}
+Lexeme {tokenType=STRING, value="key31"}
+Lexeme {tokenType=COLON, value=:}
+Lexeme {tokenType=STRING, value="value31"}
+Lexeme {tokenType=RIGHT_BRACE, value=}}
+Lexeme {tokenType=STRING, value="key4"}
+Lexeme {tokenType=COLON, value=:}
+Lexeme {tokenType=LEFT_SQUARE_BRACKET, value=[}
+Lexeme {tokenType=NUMBER, value=123}
+Lexeme {tokenType=COMMA, value=,}
+Lexeme {tokenType=NUMBER, value=345.78}
+Lexeme {tokenType=COMMA, value=,}
+Lexeme {tokenType=NUMBER, value=13.45e90}
+Lexeme {tokenType=RIGHT_SQUARE_BRACKET, value=]}
+Lexeme {tokenType=RIGHT_BRACE, value=}}
+```
+
 ## TODO
 1. Divide the components into two and work on them
    1. Lexer

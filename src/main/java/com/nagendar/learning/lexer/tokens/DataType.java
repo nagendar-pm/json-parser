@@ -4,5 +4,5 @@ package com.nagendar.learning.lexer.tokens;/*
  */
 
 public enum DataType implements Token {
-	STRING, NUMBER, OBJECT, ARRAY, BOOLEAN, NULL;
+	STRING, NUMBER, OBJECT, ARRAY, BOOLEAN, WHITE_SPACE, NULL
 }

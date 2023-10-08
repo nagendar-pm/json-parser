@@ -5,6 +5,8 @@
 
 package com.nagendar.learning.lexer;
 
+import com.nagendar.learning.lexer.tokens.*;
+
 public class LexerImpl implements Lexer {
 	private final String input;
 	private int index;
@@ -15,7 +17,7 @@ public class LexerImpl implements Lexer {
 	}
 
 	@Override
-	public Object nextToken() {
+	public Lexeme nextToken() {
 		if (index >= input.length()) {
 			return null;
 		}
@@ -33,7 +35,7 @@ public class LexerImpl implements Lexer {
 				sb.append(input.charAt(index));
 				index++;
 			}
-			return sb.toString();
+			return new Lexeme(DataType.STRING, sb.toString());
 		}
 		else if ((c >= '0' && c <= '9') || c == '-') {
 			// TODO: think how we are representing this number with special chars
@@ -72,15 +74,35 @@ public class LexerImpl implements Lexer {
 				sb.append(input.charAt(index));
 				index++;
 			}
-			return sb.toString();
+			return new Lexeme(DataType.NUMBER, sb.toString());
 		}
 		else if (c == '{' || c == '}' || c == '[' || c == ']' || c == ':' || c == ',') {
-			return sb.toString();
+			String operator = sb.toString();
+			Lexeme lexeme;
+			if (c == '{') {
+				lexeme = new Lexeme(Brace.LEFT_BRACE, operator);
+			}
+			else if (c == '}') {
+				lexeme = new Lexeme(Brace.RIGHT_BRACE, operator);
+			}
+			else if (c == '[') {
+				lexeme = new Lexeme(SquareBracket.LEFT_SQUARE_BRACKET, operator);
+			}
+			else if (c == ']') {
+				lexeme = new Lexeme(SquareBracket.RIGHT_SQUARE_BRACKET, operator);
+			}
+			else if (c == ':') {
+				lexeme = new Lexeme(Colon.COLON, operator);
+			}
+			else {
+				lexeme = new Lexeme(Comma.COMMA, operator);
+			}
+			return lexeme;
 		}
 		else if (c == '\n' || c == '\t' || c == ' ') {
-			return "WHITE_SPACE";
+			return new Lexeme(DataType.WHITE_SPACE, "");
 		}
-		return null;
+		return new Lexeme(DataType.NULL, null);
 	}
 
 	@Override
