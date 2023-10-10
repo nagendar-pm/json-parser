@@ -9,6 +9,8 @@ import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.Lexer;
 import com.nagendar.learning.lexer.LexerImpl;
 import com.nagendar.learning.lexer.tokens.DataType;
+import com.nagendar.learning.parser.Parser;
+import com.nagendar.learning.parser.ParserImpl;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,6 +25,7 @@ public class Main {
 		String fileContent = Files.readString(file);
 		System.out.println("fileContent = " + fileContent);
 		Lexer lexer = new LexerImpl(fileContent);
+		Parser parser = new ParserImpl();
 		List<Lexeme> lexemes = new ArrayList<>();
 		while (lexer.hasToken()) {
 			Lexeme lexeme = lexer.nextToken();
@@ -30,5 +33,7 @@ public class Main {
 			lexemes.add(lexeme);
 			System.out.println(lexeme);
 		}
+		boolean parse = parser.parse(lexemes);
+		System.out.println("Verdict = " + parse);
 	}
 }
