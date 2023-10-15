@@ -36,6 +36,13 @@ Lexeme {tokenType=NUMBER, value=345.78}
 Lexeme {tokenType=COMMA, value=,}
 Lexeme {tokenType=NUMBER, value=13.45e90}
 Lexeme {tokenType=RIGHT_SQUARE_BRACKET, value=]}
+Lexeme {tokenType=COMMA, value=,}
+Lexeme {tokenType=STRING, value="key5"}
+Lexeme {tokenType=COLON, value=:}
+Lexeme {tokenType=BOOLEAN, value=true}
+Lexeme {tokenType=STRING, value="key6"}
+Lexeme {tokenType=COLON, value=:}
+Lexeme {tokenType=BOOLEAN, value=false}
 Lexeme {tokenType=RIGHT_BRACE, value=}}
 ```
 
