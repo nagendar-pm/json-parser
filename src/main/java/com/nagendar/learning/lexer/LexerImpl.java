@@ -58,26 +58,10 @@ public class LexerImpl implements Lexer {
 			return lexeme;
 		}
 		else if (c == '{' || c == '}' || c == '[' || c == ']' || c == ':' || c == ',') {
-			String operator = sb.toString();
-			Lexeme lexeme;
-			if (c == '{') {
-				lexeme = new Lexeme(Brace.LEFT_BRACE, operator);
-			}
-			else if (c == '}') {
-				lexeme = new Lexeme(Brace.RIGHT_BRACE, operator);
-			}
-			else if (c == '[') {
-				lexeme = new Lexeme(SquareBracket.LEFT_SQUARE_BRACKET, operator);
-			}
-			else if (c == ']') {
-				lexeme = new Lexeme(SquareBracket.RIGHT_SQUARE_BRACKET, operator);
-			}
-			else if (c == ':') {
-				lexeme = new Lexeme(Colon.COLON, operator);
-			}
-			else {
-				lexeme = new Lexeme(Comma.COMMA, operator);
-			}
+			input.setIndex(index);
+			Lexeme lexeme = tokenizerFactory.getTokenizer(Constants.SEPARATOR_TOKENIZER)
+					.getToken(input);
+			index = input.getIndex();
 			return lexeme;
 		}
 		else if (c == '\n' || c == '\t' || c == ' ') {

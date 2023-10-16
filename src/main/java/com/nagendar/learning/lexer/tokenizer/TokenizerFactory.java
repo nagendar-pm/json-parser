@@ -23,6 +23,7 @@ public class TokenizerFactory {
 		this.tokenizerMap = new HashMap<>();
 		tokenizerMap.put(Constants.NUMBER_TOKENIZER, new NumberTokenizer(stringBuilder));
 		tokenizerMap.put(Constants.BOOLEAN_TOKENIZER, new BooleanTokenizer(stringBuilder));
+		tokenizerMap.put(Constants.SEPARATOR_TOKENIZER, new SeparatorTokenizer());
 	}
 
 	public Tokenizer getTokenizer(String tokenizerName) {
