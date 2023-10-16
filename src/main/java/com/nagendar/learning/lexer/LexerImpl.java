@@ -28,20 +28,12 @@ public class LexerImpl implements Lexer {
 			return null;
 		}
 		char c = inputString.charAt(index);
-		StringBuilder sb = new StringBuilder();
-		sb.append(c);
-		index++;
 		if (c == '\"') {
-			// TODO: handle quotes inside string
-			while (index < inputString.length() && inputString.charAt(index) != '\"') {
-				sb.append(inputString.charAt(index));
-				index++;
-			}
-			if (index < inputString.length()) {
-				sb.append(inputString.charAt(index));
-				index++;
-			}
-			return new Lexeme(DataType.STRING, sb.toString());
+			input.setIndex(index);
+			Lexeme lexeme = tokenizerFactory.getTokenizer(Constants.STRING_TOKENIZER)
+					.getToken(input);
+			index = input.getIndex();
+			return lexeme;
 		}
 		else if (c == 't' || c == 'f') {
 			input.setIndex(index);
@@ -65,8 +57,10 @@ public class LexerImpl implements Lexer {
 			return lexeme;
 		}
 		else if (c == '\n' || c == '\t' || c == ' ') {
+			input.setIndex(index++);
 			return new Lexeme(DataType.WHITE_SPACE, "");
 		}
+		input.setIndex(index++);
 		return new Lexeme(DataType.NULL, null);
 	}
 

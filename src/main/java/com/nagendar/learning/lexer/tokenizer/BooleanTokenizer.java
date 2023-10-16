@@ -31,7 +31,7 @@ public class BooleanTokenizer implements Tokenizer {
 	@Override
 	public Lexeme getToken(Input input) {
 		stringBuilder.setLength(0);
-		int start = input.getIndex()-1;
+		int start = input.getIndex();
 		int index = start;
 		String inputString = input.getInput();
 

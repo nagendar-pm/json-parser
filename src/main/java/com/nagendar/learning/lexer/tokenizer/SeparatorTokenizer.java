@@ -34,7 +34,7 @@ public class SeparatorTokenizer implements Tokenizer {
 
 	@Override
 	public Lexeme getToken(Input input) {
-		int start = input.getIndex()-1;
+		int start = input.getIndex();
 		int index = start;
 		String inputString = input.getInput();
 
