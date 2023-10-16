@@ -5,34 +5,39 @@
 
 package com.nagendar.learning.lexer;
 
+import com.nagendar.learning.lexer.tokenizer.NumberTokenizer;
 import com.nagendar.learning.lexer.tokens.*;
 
 public class LexerImpl implements Lexer {
-	private final String input;
+	private final String inputString;
 	private int index;
+	private Input input;
+	private NumberTokenizer numberTokenizer;
 
-	public LexerImpl(String input) {
-		this.input = input;
+	public LexerImpl(String inputString, Input input) {
+		this.inputString = inputString;
 		this.index = 0;
+		this.input = input;
+		this.numberTokenizer = new NumberTokenizer(new StringBuilder());
 	}
 
 	@Override
 	public Lexeme nextToken() {
-		if (index >= input.length()) {
+		if (index >= inputString.length()) {
 			return null;
 		}
-		char c = input.charAt(index);
+		char c = inputString.charAt(index);
 		StringBuilder sb = new StringBuilder();
 		sb.append(c);
 		index++;
 		if (c == '\"') {
 			// TODO: handle quotes inside string
-			while (index < input.length() && input.charAt(index) != '\"') {
-				sb.append(input.charAt(index));
+			while (index < inputString.length() && inputString.charAt(index) != '\"') {
+				sb.append(inputString.charAt(index));
 				index++;
 			}
-			if (index < input.length()) {
-				sb.append(input.charAt(index));
+			if (index < inputString.length()) {
+				sb.append(inputString.charAt(index));
 				index++;
 			}
 			return new Lexeme(DataType.STRING, sb.toString());
@@ -41,10 +46,10 @@ public class LexerImpl implements Lexer {
 			// check for true here
 			String trueString = "true";
 			int matchIndex = 1;
-			while (index < input.length()
+			while (index < inputString.length()
 					&& matchIndex < trueString.length()
-					&& input.charAt(index) == trueString.charAt(matchIndex)) {
-				sb.append(input.charAt(index));
+					&& inputString.charAt(index) == trueString.charAt(matchIndex)) {
+				sb.append(inputString.charAt(index));
 				index++;
 				matchIndex++;
 			}
@@ -58,10 +63,10 @@ public class LexerImpl implements Lexer {
 			// check for false
 			String falseString = "false";
 			int matchIndex = 1;
-			while (index < input.length()
+			while (index < inputString.length()
 					&& matchIndex < falseString.length()
-					&& input.charAt(index) == falseString.charAt(matchIndex)) {
-				sb.append(input.charAt(index));
+					&& inputString.charAt(index) == falseString.charAt(matchIndex)) {
+				sb.append(inputString.charAt(index));
 				index++;
 				matchIndex++;
 			}
@@ -73,42 +78,10 @@ public class LexerImpl implements Lexer {
 		}
 		else if ((c >= '0' && c <= '9') || c == '-') {
 			// TODO: think how we are representing this number with special chars
-			while (index < input.length()
-					&& input.charAt(index) >= '0'
-					&& input.charAt(index) <= '9') {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			if (index < input.length()
-					&& input.charAt(index) == '.') {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			while (index < input.length()
-					&& input.charAt(index) >= '0'
-					&& input.charAt(index) <= '9') {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			if (index < input.length()
-					&& (input.charAt(index) == 'e'
-					|| input.charAt(index) == 'E')) {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			if (index < input.length()
-					&& (input.charAt(index) == '-'
-					|| input.charAt(index) == '+')) {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			while (index < input.length()
-					&& input.charAt(index) >= '0'
-					&& input.charAt(index) <= '9') {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			return new Lexeme(DataType.NUMBER, sb.toString());
+			input.setIndex(index);
+			Lexeme lexeme = numberTokenizer.getToken(input);
+			index = input.getIndex();
+			return lexeme;
 		}
 		else if (c == '{' || c == '}' || c == '[' || c == ']' || c == ':' || c == ',') {
 			String operator = sb.toString();
@@ -141,6 +114,6 @@ public class LexerImpl implements Lexer {
 
 	@Override
 	public boolean hasToken() {
-		return index < input.length();
+		return index < inputString.length();
 	}
 }
