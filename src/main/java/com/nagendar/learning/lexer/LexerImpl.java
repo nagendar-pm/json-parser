@@ -10,65 +10,50 @@ import com.nagendar.learning.lexer.tokenizer.TokenizerFactory;
 import com.nagendar.learning.lexer.tokens.*;
 
 public class LexerImpl implements Lexer {
-	private final String inputString;
-	private int index;
 	private final Input input;
 	private final TokenizerFactory tokenizerFactory;
 
-	public LexerImpl(String inputString, Input input, TokenizerFactory tokenizerFactory) {
-		this.inputString = inputString;
+	public LexerImpl(String inputString, TokenizerFactory tokenizerFactory) {
 		this.tokenizerFactory = tokenizerFactory;
-		this.index = 0;
-		this.input = input;
+		this.input = new Input(inputString);
 	}
 
 	@Override
 	public Lexeme nextToken() {
-		if (index >= inputString.length()) {
+		if (!input.hasToken()) {
 			return null;
 		}
-		char c = inputString.charAt(index);
-		if (c == '\"') {
-			input.setIndex(index);
-			Lexeme lexeme = tokenizerFactory.getTokenizer(Constants.STRING_TOKENIZER)
+		char c = input.getNextChar();
+		Lexeme lexeme;
+		if (Constants.STRING_INITIALIZER.contains(c)) {
+			lexeme = tokenizerFactory.getTokenizer(Constants.STRING_TOKENIZER)
 					.getToken(input);
-			index = input.getIndex();
-			return lexeme;
 		}
-		else if (c == 't' || c == 'f') {
-			input.setIndex(index);
-			Lexeme lexeme = tokenizerFactory.getTokenizer(Constants.BOOLEAN_TOKENIZER)
+		else if (Constants.BOOLEAN_INITIALIZER.contains(c)) {
+			lexeme = tokenizerFactory.getTokenizer(Constants.BOOLEAN_TOKENIZER)
 					.getToken(input);
-			index = input.getIndex();
-			return lexeme;
 		}
-		else if ((c >= '0' && c <= '9') || c == '-') {
-			input.setIndex(index);
-			Lexeme lexeme = tokenizerFactory.getTokenizer(Constants.NUMBER_TOKENIZER)
+		else if (Constants.NUMBER_INITIALIZER.contains(c)) {
+			lexeme = tokenizerFactory.getTokenizer(Constants.NUMBER_TOKENIZER)
 					.getToken(input);
-			index = input.getIndex();
-			return lexeme;
 		}
-		else if (c == '{' || c == '}' || c == '[' || c == ']' || c == ':' || c == ',') {
-			input.setIndex(index);
-			Lexeme lexeme = tokenizerFactory.getTokenizer(Constants.SEPARATOR_TOKENIZER)
+		else if (Constants.SEPARATOR_CHARACTERS.contains(c)) {
+			lexeme = tokenizerFactory.getTokenizer(Constants.SEPARATOR_TOKENIZER)
 					.getToken(input);
-			index = input.getIndex();
-			return lexeme;
 		}
-		else if (c == '\n' || c == '\t' || c == ' ') {
-			input.setIndex(index);
-			Lexeme lexeme = tokenizerFactory.getTokenizer(Constants.WHITESPACE_TOKENIZER)
+		else if (Constants.WHITESPACE_CHARACTERS.contains(c)) {
+			lexeme = tokenizerFactory.getTokenizer(Constants.WHITESPACE_TOKENIZER)
 					.getToken(input);
-			index = input.getIndex();
-			return lexeme;
 		}
-		input.setIndex(index++);
-		return new Lexeme(DataType.NULL, null);
+		else {
+			lexeme = new Lexeme(DataType.NULL, null, input.getIndex(), input.getIndex());
+			input.setIndex(input.getIndex()+1);
+		}
+		return lexeme;
 	}
 
 	@Override
 	public boolean hasToken() {
-		return index < inputString.length();
+		return input.hasToken();
 	}
 }
