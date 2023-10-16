@@ -37,6 +37,6 @@ public class Main {
 			System.out.println(lexeme);
 		}
 		boolean parse = parser.parse(lexemes);
-		System.out.println("Verdict = " + parse);
+		System.out.println("Verdict = " + (parse ? "Valid JSON" : "Invalid JSON"));
 	}
 }
