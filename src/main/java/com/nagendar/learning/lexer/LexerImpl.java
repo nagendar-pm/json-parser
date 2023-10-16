@@ -5,20 +5,21 @@
 
 package com.nagendar.learning.lexer;
 
-import com.nagendar.learning.lexer.tokenizer.NumberTokenizer;
+import com.nagendar.learning.constants.Constants;
+import com.nagendar.learning.lexer.tokenizer.TokenizerFactory;
 import com.nagendar.learning.lexer.tokens.*;
 
 public class LexerImpl implements Lexer {
 	private final String inputString;
 	private int index;
-	private Input input;
-	private NumberTokenizer numberTokenizer;
+	private final Input input;
+	private final TokenizerFactory tokenizerFactory;
 
-	public LexerImpl(String inputString, Input input) {
+	public LexerImpl(String inputString, Input input, TokenizerFactory tokenizerFactory) {
 		this.inputString = inputString;
+		this.tokenizerFactory = tokenizerFactory;
 		this.index = 0;
 		this.input = input;
-		this.numberTokenizer = new NumberTokenizer(new StringBuilder());
 	}
 
 	@Override
@@ -42,44 +43,17 @@ public class LexerImpl implements Lexer {
 			}
 			return new Lexeme(DataType.STRING, sb.toString());
 		}
-		else if (c == 't') {
-			// check for true here
-			String trueString = "true";
-			int matchIndex = 1;
-			while (index < inputString.length()
-					&& matchIndex < trueString.length()
-					&& inputString.charAt(index) == trueString.charAt(matchIndex)) {
-				sb.append(inputString.charAt(index));
-				index++;
-				matchIndex++;
-			}
-			if (matchIndex >= trueString.length()) {
-				return new Lexeme(DataType.BOOLEAN, sb.toString());
-			}
-			return new Lexeme(DataType.NULL, null);
-			// throw an exception here
-		}
-		else if (c == 'f') {
-			// check for false
-			String falseString = "false";
-			int matchIndex = 1;
-			while (index < inputString.length()
-					&& matchIndex < falseString.length()
-					&& inputString.charAt(index) == falseString.charAt(matchIndex)) {
-				sb.append(inputString.charAt(index));
-				index++;
-				matchIndex++;
-			}
-			if (matchIndex >= falseString.length()) {
-				return new Lexeme(DataType.BOOLEAN, sb.toString());
-			}
-			return new Lexeme(DataType.NULL, null);
-			// throw an exception here
+		else if (c == 't' || c == 'f') {
+			input.setIndex(index);
+			Lexeme lexeme = tokenizerFactory.getTokenizer(Constants.BOOLEAN_TOKENIZER)
+					.getToken(input);
+			index = input.getIndex();
+			return lexeme;
 		}
 		else if ((c >= '0' && c <= '9') || c == '-') {
-			// TODO: think how we are representing this number with special chars
 			input.setIndex(index);
-			Lexeme lexeme = numberTokenizer.getToken(input);
+			Lexeme lexeme = tokenizerFactory.getTokenizer(Constants.NUMBER_TOKENIZER)
+					.getToken(input);
 			index = input.getIndex();
 			return lexeme;
 		}

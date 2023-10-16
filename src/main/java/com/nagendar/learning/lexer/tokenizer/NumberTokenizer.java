@@ -18,7 +18,7 @@ public class NumberTokenizer implements Tokenizer{
 
 	@Override
 	public Lexeme getToken(Input input) {
-		stringBuilder.delete(0, stringBuilder.length());
+		stringBuilder.setLength(0);
 		int start = input.getIndex()-1;
 		int index = start;
 		String inputString = input.getInput();

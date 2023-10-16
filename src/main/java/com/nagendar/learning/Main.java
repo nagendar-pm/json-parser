@@ -9,6 +9,7 @@ import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.Lexer;
 import com.nagendar.learning.lexer.LexerImpl;
+import com.nagendar.learning.lexer.tokenizer.TokenizerFactory;
 import com.nagendar.learning.lexer.tokens.DataType;
 import com.nagendar.learning.parser.Parser;
 import com.nagendar.learning.parser.ParserImpl;
@@ -26,7 +27,9 @@ public class Main {
 		String fileContent = Files.readString(file);
 		System.out.println("fileContent = " + fileContent);
 		Input input = new Input(fileContent);
-		Lexer lexer = new LexerImpl(fileContent, input);
+		StringBuilder stringBuilder = new StringBuilder();
+		TokenizerFactory tokenizerFactory = new TokenizerFactory(stringBuilder);
+		Lexer lexer = new LexerImpl(fileContent, input, tokenizerFactory);
 		Parser parser = new ParserImpl();
 		List<Lexeme> lexemes = new ArrayList<>();
 		while (lexer.hasToken()) {
