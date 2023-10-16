@@ -25,6 +25,7 @@ public class TokenizerFactory {
 		tokenizerMap.put(Constants.BOOLEAN_TOKENIZER, new BooleanTokenizer(stringBuilder));
 		tokenizerMap.put(Constants.SEPARATOR_TOKENIZER, new SeparatorTokenizer());
 		tokenizerMap.put(Constants.STRING_TOKENIZER, new StringTokenizer(stringBuilder));
+		tokenizerMap.put(Constants.WHITESPACE_TOKENIZER, new WhitespaceTokenizer());
 	}
 
 	public Tokenizer getTokenizer(String tokenizerName) {

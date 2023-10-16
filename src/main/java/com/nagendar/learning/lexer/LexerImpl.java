@@ -57,8 +57,11 @@ public class LexerImpl implements Lexer {
 			return lexeme;
 		}
 		else if (c == '\n' || c == '\t' || c == ' ') {
-			input.setIndex(index++);
-			return new Lexeme(DataType.WHITE_SPACE, "");
+			input.setIndex(index);
+			Lexeme lexeme = tokenizerFactory.getTokenizer(Constants.WHITESPACE_TOKENIZER)
+					.getToken(input);
+			index = input.getIndex();
+			return lexeme;
 		}
 		input.setIndex(index++);
 		return new Lexeme(DataType.NULL, null);
