@@ -8,6 +8,6 @@ package com.nagendar.learning.parser.analyzer;
 import com.nagendar.learning.parser.TokenBase;
 
 public interface Analyzer {
-	void parse(TokenBase tokenBase);
-	void setNextAnalyzer(Analyzer analyzer);
+	void analyze(TokenBase tokenBase);
+	void setNextAnalyzer();
 }
