@@ -21,7 +21,10 @@ public class AnalyzerFactory {
 		tokenAnalyzerMap = new HashMap<>();
 		tokenAnalyzerMap.put(Brace.LEFT_BRACE, new LeftBraceAnalyzer());
 		tokenAnalyzerMap.put(Brace.RIGHT_BRACE, new RightBraceAnalyzer());
-		tokenAnalyzerMap.put(DataType.STRING, new ValueAnalyzer());
+		Analyzer valueAnalyzer = new ValueAnalyzer();
+		tokenAnalyzerMap.put(DataType.STRING, valueAnalyzer);
+		tokenAnalyzerMap.put(DataType.NUMBER, valueAnalyzer);
+		tokenAnalyzerMap.put(DataType.BOOLEAN, valueAnalyzer);
 		tokenAnalyzerMap.put(Colon.COLON, new ColonAnalyzer());
 		tokenAnalyzerMap.put(SquareBracket.LEFT_SQUARE_BRACKET, new LeftBracketAnalyzer());
 		tokenAnalyzerMap.put(SquareBracket.RIGHT_SQUARE_BRACKET, new RightBracketAnalyzer());

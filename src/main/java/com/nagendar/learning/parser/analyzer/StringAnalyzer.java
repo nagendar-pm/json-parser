@@ -1,6 +1,6 @@
 /*
  * @author: pagidimarri.nagendar
- * @createdAt: 17/10/23 7:22 pm
+ * @createdAt: 18/10/23 3:44 pm
  */
 
 package com.nagendar.learning.parser.analyzer;
@@ -12,29 +12,23 @@ import com.nagendar.learning.parser.TokenBase;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ValueAnalyzer implements Analyzer {
+public class StringAnalyzer implements Analyzer {
 	private final Map<Token, String> nextPotentialCharacters;
-	private final Analyzer stringAnalyzer;
 
-	public ValueAnalyzer() {
+	public StringAnalyzer() {
 		this.nextPotentialCharacters = new HashMap<>();
-		this.stringAnalyzer = new StringAnalyzer();
 		setNextAnalyzer();
 	}
 
 	@Override
 	public void analyze(TokenBase tokenBase) {
 		Lexeme currentLexeme = tokenBase.getLexeme();
-		if (currentLexeme.getTokenType() == DataType.STRING) {
-			stringAnalyzer.analyze(tokenBase);
-		}
-		else {
-
-		}
+		Lexeme nextLexeme = tokenBase.getLexeme();
 	}
 
 	@Override
 	public void setNextAnalyzer() {
+		nextPotentialCharacters.put(Colon.COLON, ":");
 		nextPotentialCharacters.put(Comma.COMMA, ",");
 		nextPotentialCharacters.put(SquareBracket.RIGHT_SQUARE_BRACKET, "]");
 		nextPotentialCharacters.put(Brace.RIGHT_BRACE, "}");

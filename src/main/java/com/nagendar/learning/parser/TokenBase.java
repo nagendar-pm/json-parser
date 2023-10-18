@@ -21,9 +21,16 @@ public class TokenBase {
 		this.symbols = new Stack<>();
 	}
 
-	public List<Lexeme> getLexemes() {
-		return lexemes;
+	public Lexeme getLexeme() {
+		if (index == lexemes.size()) {
+			return null;
+		}
+		return this.lexemes.get(index);
 	}
+
+//	public List<Lexeme> getLexemes() {
+//		return lexemes;
+//	}
 
 	public int getIndex() {
 		return index;

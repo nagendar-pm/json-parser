@@ -12,10 +12,10 @@ import com.nagendar.learning.parser.TokenBase;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KeyAnalyzer implements Analyzer {
+public class KeyStringAnalyzer implements Analyzer {
 	private final Map<Token, String> nextPotentialCharacters;
 
-	public KeyAnalyzer() {
+	public KeyStringAnalyzer() {
 		this.nextPotentialCharacters = new HashMap<>();
 		setNextAnalyzer();
 	}
