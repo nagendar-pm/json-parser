@@ -5,142 +5,55 @@
 
 package com.nagendar.learning.lexer;
 
+import com.nagendar.learning.constants.Constants;
+import com.nagendar.learning.lexer.tokenizer.TokenizerFactory;
 import com.nagendar.learning.lexer.tokens.*;
 
 public class LexerImpl implements Lexer {
-	private final String input;
-	private int index;
+	private final Input input;
+	private final TokenizerFactory tokenizerFactory;
 
-	public LexerImpl(String input) {
-		this.input = input;
-		this.index = 0;
+	public LexerImpl(String inputString, TokenizerFactory tokenizerFactory) {
+		this.tokenizerFactory = tokenizerFactory;
+		this.input = new Input(inputString);
 	}
 
 	@Override
 	public Lexeme nextToken() {
-		if (index >= input.length()) {
+		if (!input.hasToken()) {
 			return null;
 		}
-		char c = input.charAt(index);
-		StringBuilder sb = new StringBuilder();
-		sb.append(c);
-		index++;
-		if (c == '\"') {
-			// TODO: handle quotes inside string
-			while (index < input.length() && input.charAt(index) != '\"') {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			if (index < input.length()) {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			return new Lexeme(DataType.STRING, sb.toString());
+		char c = input.getNextChar();
+		Lexeme lexeme;
+		if (Constants.STRING_INITIALIZER.contains(c)) {
+			lexeme = tokenizerFactory.getTokenizer(Constants.STRING_TOKENIZER)
+					.getToken(input);
 		}
-		else if (c == 't') {
-			// check for true here
-			String trueString = "true";
-			int matchIndex = 1;
-			while (index < input.length()
-					&& matchIndex < trueString.length()
-					&& input.charAt(index) == trueString.charAt(matchIndex)) {
-				sb.append(input.charAt(index));
-				index++;
-				matchIndex++;
-			}
-			if (matchIndex >= trueString.length()) {
-				return new Lexeme(DataType.BOOLEAN, sb.toString());
-			}
-			return new Lexeme(DataType.NULL, null);
-			// throw an exception here
+		else if (Constants.BOOLEAN_INITIALIZER.contains(c)) {
+			lexeme = tokenizerFactory.getTokenizer(Constants.BOOLEAN_TOKENIZER)
+					.getToken(input);
 		}
-		else if (c == 'f') {
-			// check for false
-			String falseString = "false";
-			int matchIndex = 1;
-			while (index < input.length()
-					&& matchIndex < falseString.length()
-					&& input.charAt(index) == falseString.charAt(matchIndex)) {
-				sb.append(input.charAt(index));
-				index++;
-				matchIndex++;
-			}
-			if (matchIndex >= falseString.length()) {
-				return new Lexeme(DataType.BOOLEAN, sb.toString());
-			}
-			return new Lexeme(DataType.NULL, null);
-			// throw an exception here
+		else if (Constants.NUMBER_INITIALIZER.contains(c)) {
+			lexeme = tokenizerFactory.getTokenizer(Constants.NUMBER_TOKENIZER)
+					.getToken(input);
 		}
-		else if ((c >= '0' && c <= '9') || c == '-') {
-			// TODO: think how we are representing this number with special chars
-			while (index < input.length()
-					&& input.charAt(index) >= '0'
-					&& input.charAt(index) <= '9') {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			if (index < input.length()
-					&& input.charAt(index) == '.') {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			while (index < input.length()
-					&& input.charAt(index) >= '0'
-					&& input.charAt(index) <= '9') {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			if (index < input.length()
-					&& (input.charAt(index) == 'e'
-					|| input.charAt(index) == 'E')) {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			if (index < input.length()
-					&& (input.charAt(index) == '-'
-					|| input.charAt(index) == '+')) {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			while (index < input.length()
-					&& input.charAt(index) >= '0'
-					&& input.charAt(index) <= '9') {
-				sb.append(input.charAt(index));
-				index++;
-			}
-			return new Lexeme(DataType.NUMBER, sb.toString());
+		else if (Constants.SEPARATOR_CHARACTERS.contains(c)) {
+			lexeme = tokenizerFactory.getTokenizer(Constants.SEPARATOR_TOKENIZER)
+					.getToken(input);
 		}
-		else if (c == '{' || c == '}' || c == '[' || c == ']' || c == ':' || c == ',') {
-			String operator = sb.toString();
-			Lexeme lexeme;
-			if (c == '{') {
-				lexeme = new Lexeme(Brace.LEFT_BRACE, operator);
-			}
-			else if (c == '}') {
-				lexeme = new Lexeme(Brace.RIGHT_BRACE, operator);
-			}
-			else if (c == '[') {
-				lexeme = new Lexeme(SquareBracket.LEFT_SQUARE_BRACKET, operator);
-			}
-			else if (c == ']') {
-				lexeme = new Lexeme(SquareBracket.RIGHT_SQUARE_BRACKET, operator);
-			}
-			else if (c == ':') {
-				lexeme = new Lexeme(Colon.COLON, operator);
-			}
-			else {
-				lexeme = new Lexeme(Comma.COMMA, operator);
-			}
-			return lexeme;
+		else if (Constants.WHITESPACE_CHARACTERS.contains(c)) {
+			lexeme = tokenizerFactory.getTokenizer(Constants.WHITESPACE_TOKENIZER)
+					.getToken(input);
 		}
-		else if (c == '\n' || c == '\t' || c == ' ') {
-			return new Lexeme(DataType.WHITE_SPACE, "");
+		else {
+			lexeme = new Lexeme(DataType.NULL, null, input.getIndex(), input.getIndex());
+			input.setIndex(input.getIndex()+1);
 		}
-		return new Lexeme(DataType.NULL, null);
+		return lexeme;
 	}
 
 	@Override
 	public boolean hasToken() {
-		return index < input.length();
+		return input.hasToken();
 	}
 }
