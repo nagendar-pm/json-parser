@@ -5,6 +5,7 @@
 
 package com.nagendar.learning.parser;
 
+import com.nagendar.learning.exception.exception.IllegalSymbolFoundException;
 import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.tokens.*;
 
@@ -37,10 +38,6 @@ public class ParserImpl implements Parser {
 						symbols.pop();
 					}
 					List<Lexeme> pair = handlePair(symbols);
-					if (Objects.isNull(pair)) {
-						// throw exception here
-						continue;
-					}
 					lexemeMap.put(pair.get(0).getValue().toString(), pair.get(1));
 				}
 				symbols.pop();
@@ -69,18 +66,36 @@ public class ParserImpl implements Parser {
 
 	private List<Lexeme> handlePair (Stack<Lexeme> symbols) {
 		if (symbols.size() < 3) {
-			// TODO: throw an exception here
-			System.out.println("invalid json");
+			throw new IllegalSymbolFoundException(String.format("JSON cannot be parsed: Expected at least 3 params, Found %s",
+					symbols.size()));
 		}
 		Lexeme valueCandidate = symbols.pop();
-		Lexeme colonCandidate = symbols.pop();
+		if (!isValueType(valueCandidate.getTokenType())) {
+			throw new IllegalSymbolFoundException(String.format("JSON cannot be parsed: Expected one of the types %s, Found \"%s\"",
+					Arrays.toString(DataType.values()),
+					valueCandidate.getValue()));
+		}
+ 		Lexeme colonCandidate = symbols.pop();
 		if (colonCandidate.getTokenType() != Colon.COLON) {
-			// Comma possibly belongs to an array
-			symbols.push(colonCandidate);
-			symbols.push(valueCandidate);
-			return null;
+			throw new IllegalSymbolFoundException(String.format("JSON cannot be parsed: Expected \"%s\", Found \"%s\"",
+					Colon.COLON,
+					colonCandidate.getValue()));
 		}
 		Lexeme keyCandidate = symbols.pop();
+		if (keyCandidate.getTokenType() != DataType.STRING) {
+			throw new IllegalSymbolFoundException(String.format("JSON cannot be parsed: key should be of the type \"%s\", Found \"%s\"",
+					DataType.STRING,
+					keyCandidate.getValue()));
+		}
 		return List.of(keyCandidate, valueCandidate);
+	}
+
+	private boolean isValueType(Token token) {
+		for (Token dataType : DataType.values()) {
+			if (token == dataType) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -6,5 +6,15 @@
     },
     "key4" : [123, 345.78, 13.45e90, -345.909, +245],
     "key5" : true,
-    "key6" : false
+    "key6" : false,
+    "key7" : [
+        {
+            "key711" : "value711",
+            "key712" : "value712"
+        },
+        {
+            "key721" : "value721",
+            "key722" : "value722"
+        }
+    ]
 }
