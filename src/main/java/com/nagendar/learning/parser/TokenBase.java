@@ -28,9 +28,13 @@ public class TokenBase {
 		return this.lexemes.get(index);
 	}
 
-//	public List<Lexeme> getLexemes() {
-//		return lexemes;
-//	}
+	public boolean incrementIndex() {
+		if (index == lexemes.size()) {
+			return false;
+		}
+		this.index++;
+		return true;
+	}
 
 	public int getIndex() {
 		return index;

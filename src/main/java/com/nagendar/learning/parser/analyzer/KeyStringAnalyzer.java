@@ -5,18 +5,14 @@
 
 package com.nagendar.learning.parser.analyzer;
 
+import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.tokens.Colon;
-import com.nagendar.learning.lexer.tokens.Token;
 import com.nagendar.learning.parser.TokenBase;
 
-import java.util.HashMap;
-import java.util.Map;
+public class KeyStringAnalyzer extends Analyzer {
 
-public class KeyStringAnalyzer implements Analyzer {
-	private final Map<Token, String> nextPotentialCharacters;
-
-	public KeyStringAnalyzer() {
-		this.nextPotentialCharacters = new HashMap<>();
+	public KeyStringAnalyzer(Input input, AnalyzerFactory analyzerFactory) {
+		super(input, analyzerFactory);
 		setNextAnalyzer();
 	}
 

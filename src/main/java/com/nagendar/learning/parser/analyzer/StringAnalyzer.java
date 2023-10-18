@@ -5,25 +5,33 @@
 
 package com.nagendar.learning.parser.analyzer;
 
+import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.Lexeme;
-import com.nagendar.learning.lexer.tokens.*;
+import com.nagendar.learning.lexer.tokens.Brace;
+import com.nagendar.learning.lexer.tokens.Colon;
+import com.nagendar.learning.lexer.tokens.Comma;
+import com.nagendar.learning.lexer.tokens.SquareBracket;
 import com.nagendar.learning.parser.TokenBase;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
-public class StringAnalyzer implements Analyzer {
-	private final Map<Token, String> nextPotentialCharacters;
+public class StringAnalyzer extends Analyzer {
 
-	public StringAnalyzer() {
-		this.nextPotentialCharacters = new HashMap<>();
+	public StringAnalyzer(Input input, AnalyzerFactory analyzerFactory) {
+		super(input, analyzerFactory);
 		setNextAnalyzer();
 	}
 
 	@Override
 	public void analyze(TokenBase tokenBase) {
-		Lexeme currentLexeme = tokenBase.getLexeme();
 		Lexeme nextLexeme = tokenBase.getLexeme();
+		if (Objects.isNull(nextLexeme)) {
+			super.throwAbruptEndException();
+		}
+		if (!nextPotentialCharacters.containsKey(nextLexeme.getTokenType())) {
+			super.throwUnexpectedCharacterException(nextLexeme);
+		}
+		analyzerFactory.getAnalyzerForToken(nextLexeme.getTokenType()).analyze(tokenBase);
 	}
 
 	@Override

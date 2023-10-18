@@ -5,13 +5,18 @@ package com.nagendar.learning;
  * @createdAt: 03/10/23 8:27 pm
  */
 
+import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.Lexer;
 import com.nagendar.learning.lexer.LexerImpl;
 import com.nagendar.learning.lexer.tokenizer.TokenizerFactory;
+import com.nagendar.learning.lexer.tokens.Brace;
 import com.nagendar.learning.lexer.tokens.DataType;
 import com.nagendar.learning.parser.Parser;
 import com.nagendar.learning.parser.ParserImpl;
+import com.nagendar.learning.parser.TokenBase;
+import com.nagendar.learning.parser.analyzer.Analyzer;
+import com.nagendar.learning.parser.analyzer.AnalyzerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,6 +41,10 @@ public class Main {
 			lexemes.add(lexeme);
 			System.out.println(lexeme);
 		}
+		TokenBase tokenBase = new TokenBase(lexemes);
+		AnalyzerFactory analyzerFactory = new AnalyzerFactory(new Input(fileContent));
+		Analyzer analyzer = analyzerFactory.getAnalyzerForToken(Brace.LEFT_BRACE);
+		analyzer.analyze(tokenBase);
 		boolean parse = parser.parse(lexemes);
 		System.out.println("Verdict = " + (parse ? "Valid JSON" : "Invalid JSON"));
 	}

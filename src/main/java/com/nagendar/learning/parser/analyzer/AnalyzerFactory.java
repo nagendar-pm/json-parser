@@ -5,6 +5,7 @@
 
 package com.nagendar.learning.parser.analyzer;
 
+import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.tokens.*;
 
 import java.util.HashMap;
@@ -13,22 +14,22 @@ import java.util.Map;
 public class AnalyzerFactory {
 	private Map<Token, Analyzer> tokenAnalyzerMap;
 
-	public AnalyzerFactory() {
-		populateAnalyzers();
+	public AnalyzerFactory(Input input) {
+		populateAnalyzers(input);
 	}
 
-	private void populateAnalyzers() {
+	private void populateAnalyzers(Input input) {
 		tokenAnalyzerMap = new HashMap<>();
-		tokenAnalyzerMap.put(Brace.LEFT_BRACE, new LeftBraceAnalyzer());
-		tokenAnalyzerMap.put(Brace.RIGHT_BRACE, new RightBraceAnalyzer());
-		Analyzer valueAnalyzer = new ValueAnalyzer();
+		tokenAnalyzerMap.put(Brace.LEFT_BRACE, new LeftBraceAnalyzer(input, this));
+		tokenAnalyzerMap.put(Brace.RIGHT_BRACE, new RightBraceAnalyzer(input, this));
+		Analyzer valueAnalyzer = new ValueAnalyzer(input, this);
 		tokenAnalyzerMap.put(DataType.STRING, valueAnalyzer);
 		tokenAnalyzerMap.put(DataType.NUMBER, valueAnalyzer);
 		tokenAnalyzerMap.put(DataType.BOOLEAN, valueAnalyzer);
-		tokenAnalyzerMap.put(Colon.COLON, new ColonAnalyzer());
-		tokenAnalyzerMap.put(SquareBracket.LEFT_SQUARE_BRACKET, new LeftBracketAnalyzer());
-		tokenAnalyzerMap.put(SquareBracket.RIGHT_SQUARE_BRACKET, new RightBracketAnalyzer());
-		tokenAnalyzerMap.put(Comma.COMMA, new CommaAnalyzer());
+		tokenAnalyzerMap.put(Colon.COLON, new ColonAnalyzer(input, this));
+		tokenAnalyzerMap.put(SquareBracket.LEFT_SQUARE_BRACKET, new LeftBracketAnalyzer(input, this));
+		tokenAnalyzerMap.put(SquareBracket.RIGHT_SQUARE_BRACKET, new RightBracketAnalyzer(input, this));
+		tokenAnalyzerMap.put(Comma.COMMA, new CommaAnalyzer(input, this));
 	}
 
 	public Analyzer getAnalyzerForToken(Token token) {
