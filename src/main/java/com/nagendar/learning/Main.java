@@ -8,6 +8,7 @@ package com.nagendar.learning;
 import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.Lexer;
 import com.nagendar.learning.lexer.LexerImpl;
+import com.nagendar.learning.lexer.tokenizer.TokenizerFactory;
 import com.nagendar.learning.lexer.tokens.DataType;
 import com.nagendar.learning.parser.Parser;
 import com.nagendar.learning.parser.ParserImpl;
@@ -24,7 +25,9 @@ public class Main {
 		Path file = Path.of(inputFile);
 		String fileContent = Files.readString(file);
 		System.out.println("fileContent = " + fileContent);
-		Lexer lexer = new LexerImpl(fileContent);
+		StringBuilder stringBuilder = new StringBuilder();
+		TokenizerFactory tokenizerFactory = new TokenizerFactory(stringBuilder);
+		Lexer lexer = new LexerImpl(fileContent, tokenizerFactory);
 		Parser parser = new ParserImpl();
 		List<Lexeme> lexemes = new ArrayList<>();
 		while (lexer.hasToken()) {
@@ -34,6 +37,6 @@ public class Main {
 			System.out.println(lexeme);
 		}
 		boolean parse = parser.parse(lexemes);
-		System.out.println("Verdict = " + parse);
+		System.out.println("Verdict = " + (parse ? "Valid JSON" : "Invalid JSON"));
 	}
 }
