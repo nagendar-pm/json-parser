@@ -5,7 +5,7 @@
 
 package com.nagendar.learning.parser;
 
-import com.nagendar.learning.exception.exception.IllegalSymbolFoundException;
+import com.nagendar.learning.exception.IllegalSymbolFoundException;
 import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.tokens.*;
 

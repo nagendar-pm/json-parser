@@ -7,7 +7,7 @@ package com.nagendar.learning.lexer.tokenizer;
 
 import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.Lexeme;
-import com.nagendar.learning.exception.exception.IllegalBooleanTokenException;
+import com.nagendar.learning.exception.IllegalBooleanTokenException;
 import com.nagendar.learning.lexer.tokens.DataType;
 
 import java.util.HashMap;
