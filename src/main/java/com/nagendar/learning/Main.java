@@ -10,7 +10,6 @@ import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.Lexer;
 import com.nagendar.learning.lexer.LexerImpl;
 import com.nagendar.learning.lexer.tokenizer.TokenizerFactory;
-import com.nagendar.learning.lexer.tokens.Brace;
 import com.nagendar.learning.lexer.tokens.DataType;
 import com.nagendar.learning.parser.Parser;
 import com.nagendar.learning.parser.ParserImpl;
@@ -43,7 +42,7 @@ public class Main {
 		}
 		TokenBase tokenBase = new TokenBase(lexemes);
 		AnalyzerFactory analyzerFactory = new AnalyzerFactory(new Input(fileContent));
-		Analyzer analyzer = analyzerFactory.getAnalyzerForToken(Brace.LEFT_BRACE);
+		Analyzer analyzer = analyzerFactory.getAnalyzerForToken(tokenBase.getLexeme().getTokenType());
 		analyzer.analyze(tokenBase);
 		boolean parse = parser.parse(lexemes);
 		System.out.println("Verdict = " + (parse ? "Valid JSON" : "Invalid JSON"));

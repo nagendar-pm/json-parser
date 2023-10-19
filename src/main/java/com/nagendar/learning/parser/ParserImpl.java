@@ -67,7 +67,10 @@ public class ParserImpl implements Parser {
 			Lexeme jsonObject = symbols.peek();
 			System.out.println("jsonCorrect = " + jsonObject.getValue());
 		}
-		return symbols.size() == 1 && symbols.get(0).getTokenType() == DataType.OBJECT;
+		return symbols.size() == 1 && (
+				symbols.get(0).getTokenType() == DataType.OBJECT
+				|| symbols.get(0).getTokenType() == DataType.ARRAY
+		);
 	}
 
 	private List<Lexeme> handlePair (Stack<Lexeme> symbols) {

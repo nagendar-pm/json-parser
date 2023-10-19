@@ -31,7 +31,7 @@ public class RightBracketAnalyzer extends Analyzer {
 		boolean isIncremented = tokenBase.incrementIndex();
 		Lexeme nextLexeme = tokenBase.getLexeme();
 		if (!isIncremented || Objects.isNull(nextLexeme)) {
-			super.throwAbruptEndException();
+			return;
 		}
 		if (!nextPotentialCharacters.containsKey(nextLexeme.getTokenType())) {
 			super.throwUnexpectedCharacterException(nextLexeme);
