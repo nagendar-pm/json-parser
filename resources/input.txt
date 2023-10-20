@@ -10,7 +10,7 @@
     "key7" : [
         {
             "key711" : "value711",
-            "key712" : "value712",
+            "key712" : "value712"
         },
         {
             "key721" : "value721",

@@ -5,7 +5,7 @@
 
 package com.nagendar.learning.exception;
 
-public class IllegalBooleanTokenException extends BaseException{
+public class IllegalBooleanTokenException extends RuntimeException {
 	public IllegalBooleanTokenException() {
 	}
 
