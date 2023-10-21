@@ -1,0 +1,91 @@
+@startuml
+'https://plantuml.com/class-diagram
+scale 1200 width
+
+class Main {}
+
+enum Brace implements Token {
+	LEFT_BRACE,
+	RIGHT_BRACE
+}
+enum Colon implements Token {
+	COLON
+}
+enum Comma implements Token {
+	COMMA
+}
+enum DataType implements Token {
+	STRING,
+	NUMBER,
+	OBJECT,
+	ARRAY,
+	BOOLEAN,
+	WHITE_SPACE,
+	NULL
+}
+enum Quote implements Token {
+	QUOTE
+}
+enum SquareBracket implements Token {
+	LEFT_SQUARE_BRACKET,
+	RIGHT_SQUARE_BRACKET
+}
+
+class Input {
+	- String input
+	- int index
+
+	+ boolean hasToken()
+	+ char getNextChar()
+}
+
+class Lexeme {
+	- Token tokenType
+	- Object value
+	- int start, end
+}
+
+interface Lexer {
+	Lexeme nextToken()
+	boolean hasToken()
+}
+
+interface Tokenizer {
+	Lexeme getToken(Input input)
+}
+
+class BooleanTokenizer implements Tokenizer {
+	- StringBuilder stringBuilder
+	- Map<Character, String> booleanStrings
+}
+
+class NumberTokenizer implements Tokenizer{
+	- StringBuilder stringBuilder
+}
+
+class SeparatorTokenizer implements Tokenizer {
+	- Set<Character> validSeparators
+}
+
+class StringTokenizer implements Tokenizer {
+	- StringBuilder stringBuilder
+}
+
+class WhitespaceTokenizer implements Tokenizer {
+	- Set<Character> validWhiteSpaces
+}
+
+class TokenizerFactory {
+	- Map<String, Tokenizer> tokenizerMap
+	- StringBuilder stringBuilder
+}
+
+Main -right- Lexer
+TokenizerFactory -down- Tokenizer
+Lexer -down- TokenizerFactory
+Lexeme -down- Lexer
+Tokenizer -right- Input
+Lexeme *-right- Token
+
+
+@enduml

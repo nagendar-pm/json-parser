@@ -3,7 +3,7 @@
  * @createdAt: 17/10/23 7:22 pm
  */
 
-package com.nagendar.learning.parser.analyzer;
+package com.nagendar.learning.analyzer;
 
 import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.Lexeme;
@@ -11,7 +11,6 @@ import com.nagendar.learning.lexer.tokens.Brace;
 import com.nagendar.learning.lexer.tokens.Comma;
 import com.nagendar.learning.lexer.tokens.DataType;
 import com.nagendar.learning.lexer.tokens.SquareBracket;
-import com.nagendar.learning.parser.TokenBase;
 
 import java.util.Objects;
 

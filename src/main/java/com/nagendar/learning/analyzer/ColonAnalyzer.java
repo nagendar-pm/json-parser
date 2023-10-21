@@ -1,32 +1,30 @@
 /*
  * @author: pagidimarri.nagendar
- * @createdAt: 17/10/23 7:23 pm
+ * @createdAt: 17/10/23 7:22 pm
  */
 
-package com.nagendar.learning.parser.analyzer;
+package com.nagendar.learning.analyzer;
 
 import com.nagendar.learning.exception.IllegalTokenFoundException;
 import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.tokens.Brace;
-import com.nagendar.learning.lexer.tokens.Comma;
+import com.nagendar.learning.lexer.tokens.Colon;
 import com.nagendar.learning.lexer.tokens.DataType;
 import com.nagendar.learning.lexer.tokens.SquareBracket;
-import com.nagendar.learning.parser.TokenBase;
 
 import java.util.Objects;
 
-public class CommaAnalyzer extends Analyzer {
-	public CommaAnalyzer(Input input, AnalyzerFactory analyzerFactory) {
+public class ColonAnalyzer extends Analyzer {
+	public ColonAnalyzer(Input input, AnalyzerFactory analyzerFactory) {
 		super(input, analyzerFactory);
 		setNextAnalyzer();
 	}
-
 	@Override
 	public void analyze(TokenBase tokenBase) {
 		Lexeme currentLexeme = tokenBase.getLexeme();
-		if (currentLexeme.getTokenType() != Comma.COMMA) {
-			throw new IllegalTokenFoundException(String.format("Expected ',', Found %s",
+		if (currentLexeme.getTokenType() != Colon.COLON) {
+			throw new IllegalTokenFoundException(String.format("Expected :, Found %s",
 					currentLexeme.getValue()));
 		}
 		boolean isIncremented = tokenBase.incrementIndex();

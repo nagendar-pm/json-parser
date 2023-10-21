@@ -1,37 +1,37 @@
 /*
  * @author: pagidimarri.nagendar
- * @createdAt: 17/10/23 7:25 pm
+ * @createdAt: 17/10/23 7:18 pm
  */
 
-package com.nagendar.learning.parser.analyzer;
+package com.nagendar.learning.analyzer;
 
 import com.nagendar.learning.exception.IllegalTokenFoundException;
 import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.tokens.Brace;
-import com.nagendar.learning.lexer.tokens.Comma;
-import com.nagendar.learning.lexer.tokens.SquareBracket;
-import com.nagendar.learning.parser.TokenBase;
+import com.nagendar.learning.lexer.tokens.DataType;
 
 import java.util.Objects;
 
-public class RightBraceAnalyzer extends Analyzer {
-	public RightBraceAnalyzer(Input input, AnalyzerFactory analyzerFactory) {
+public class LeftBraceAnalyzer extends Analyzer {
+	public LeftBraceAnalyzer(Input input, AnalyzerFactory analyzerFactory) {
 		super(input, analyzerFactory);
 		setNextAnalyzer();
 	}
 
 	@Override
 	public void analyze(TokenBase tokenBase) {
+		// This is the top most lexeme to be visited
+		// so we need to validate it which unlikely happens in other's case
 		Lexeme currentLexeme = tokenBase.getLexeme();
-		if (currentLexeme.getTokenType() != Brace.RIGHT_BRACE) {
-			throw new IllegalTokenFoundException(String.format("Expected }, Found %s",
+		if (currentLexeme.getTokenType() != Brace.LEFT_BRACE) {
+			throw new IllegalTokenFoundException(String.format("Expected {, Found %s",
 					currentLexeme.getValue()));
 		}
 		boolean isIncremented = tokenBase.incrementIndex();
 		Lexeme nextLexeme = tokenBase.getLexeme();
 		if (!isIncremented || Objects.isNull(nextLexeme)) {
-			return;
+			super.throwAbruptEndException();
 		}
 		if (!nextPotentialCharacters.containsKey(nextLexeme.getTokenType())) {
 			super.throwUnexpectedCharacterException(nextLexeme);
@@ -41,8 +41,6 @@ public class RightBraceAnalyzer extends Analyzer {
 
 	@Override
 	public void setNextAnalyzer() {
-		nextPotentialCharacters.put(Comma.COMMA, ",");
-		nextPotentialCharacters.put(SquareBracket.RIGHT_SQUARE_BRACKET, "]");
-		nextPotentialCharacters.put(Brace.RIGHT_BRACE, "}");
+		nextPotentialCharacters.put(DataType.STRING, "\"");
 	}
 }

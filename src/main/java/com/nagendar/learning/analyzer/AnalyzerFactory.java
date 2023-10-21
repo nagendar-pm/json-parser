@@ -3,7 +3,7 @@
  * @createdAt: 17/10/23 9:54 pm
  */
 
-package com.nagendar.learning.parser.analyzer;
+package com.nagendar.learning.analyzer;
 
 import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.tokens.*;

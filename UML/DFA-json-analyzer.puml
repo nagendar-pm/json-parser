@@ -1,0 +1,41 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+'scale 500 width
+
+[*] -right> LeftBrace
+[*] -down-> LeftSquareBracket
+LeftSquareBracket --> LeftBrace
+
+LeftBrace -right-> Key
+Key -right-> Colon
+Colon -right-> Value
+Colon --> LeftBrace
+Colon --> LeftSquareBracket
+Comma -down-> Value
+Value -down-> Comma
+Comma --> Key
+Value -right-> RightSquareBracket
+Value -down-> RightBrace
+RightBrace --> RightBrace
+RightSquareBracket --> RightSquareBracket
+RightSquareBracket --> RightBrace
+RightBrace --> RightSquareBracket
+RightBrace --> Comma
+RightSquareBracket --> Comma
+
+LeftBrace : Value('{')
+LeftSquareBracket : Value('[')
+RightBrace : Value('}')
+RightSquareBracket : Value(']')
+Comma : Value(',')
+Colon : Value(':')
+Key : String
+Value : String
+Value : Number
+Value : Boolean
+
+RightSquareBracket -right-> [*]
+RightBrace -right-> [*]
+
+@enduml

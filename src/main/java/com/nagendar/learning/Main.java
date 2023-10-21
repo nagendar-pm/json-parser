@@ -14,9 +14,9 @@ import com.nagendar.learning.lexer.tokenizer.TokenizerFactory;
 import com.nagendar.learning.lexer.tokens.DataType;
 import com.nagendar.learning.parser.Parser;
 import com.nagendar.learning.parser.ParserImpl;
-import com.nagendar.learning.parser.TokenBase;
-import com.nagendar.learning.parser.analyzer.Analyzer;
-import com.nagendar.learning.parser.analyzer.AnalyzerFactory;
+import com.nagendar.learning.analyzer.TokenBase;
+import com.nagendar.learning.analyzer.Analyzer;
+import com.nagendar.learning.analyzer.AnalyzerFactory;
 import com.nagendar.learning.utils.FileUtils;
 
 import java.io.IOException;

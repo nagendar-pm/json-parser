@@ -1,0 +1,50 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+scale 1000 width
+
+class Main{}
+
+interface Formatter {
+	String format(Lexeme lexeme, int depth)
+}
+
+interface Token {
+}
+
+class Lexeme {
+	- Token tokenType
+	- Object value
+	- int start, end
+}
+
+class FormatterFactory {
+	- Map<Token, Formatter> formatterMap
+	+ Formatter getFormatterFromToken(Token type)
+}
+
+class ArrayFormatter implements Formatter {
+	- FormatterFactory formatterFactory
+}
+
+class BooleanFormatter implements Formatter {
+	- FormatterFactory formatterFactory
+}
+
+class NumberFormatter implements Formatter {
+	- FormatterFactory formatterFactory
+}
+
+class ObjectFormatter implements Formatter {
+	- FormatterFactory formatterFactory
+}
+
+class StringFormatter implements Formatter {
+	- FormatterFactory formatterFactory
+}
+
+FormatterFactory -down- Formatter
+Formatter -right- Lexeme
+FormatterFactory -right- Token
+Main -right- Formatter
+@enduml

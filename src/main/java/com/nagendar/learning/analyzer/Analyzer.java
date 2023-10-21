@@ -3,13 +3,12 @@
  * @createdAt: 17/10/23 5:48 pm
  */
 
-package com.nagendar.learning.parser.analyzer;
+package com.nagendar.learning.analyzer;
 
 import com.nagendar.learning.exception.IllegalTokenFoundException;
 import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.tokens.Token;
-import com.nagendar.learning.parser.TokenBase;
 
 import java.util.HashMap;
 import java.util.Map;
