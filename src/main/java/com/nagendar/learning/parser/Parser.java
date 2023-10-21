@@ -9,5 +9,5 @@ import com.nagendar.learning.lexer.Lexeme;
 import java.util.List;
 
 public interface Parser {
-	boolean parse(List<Lexeme> lexemes);
+	Lexeme parse(List<Lexeme> lexemes);
 }

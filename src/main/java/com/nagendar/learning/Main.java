@@ -5,6 +5,7 @@ package com.nagendar.learning;
  * @createdAt: 03/10/23 8:27 pm
  */
 
+import com.nagendar.learning.formatter.FormatterFactory;
 import com.nagendar.learning.lexer.Input;
 import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.Lexer;
@@ -33,14 +34,17 @@ public class Main {
 			Path file = Path.of(inputFile);
 			String fileContent = Files.readString(file);
 			System.out.println("Working on " + inputFile);
-			System.out.println("fileContent = " + fileContent);
+			System.out.println("fileContent\n" + fileContent);
 			List<Lexeme> lexemes = tokenize(fileContent);
 			analyze(lexemes, new Input(fileContent));
-			parse(lexemes);
+			Lexeme parsedJson = parse(lexemes);
+			format(parsedJson);
+			System.out.println("\n\n\n");
 		}
 	}
 
 	private static List<Lexeme> tokenize(String fileContent) {
+		boxedPrint("Lexical Analysis");
 		StringBuilder stringBuilder = new StringBuilder();
 		TokenizerFactory tokenizerFactory = new TokenizerFactory(stringBuilder);
 		Lexer lexer = new LexerImpl(fileContent, tokenizerFactory);
@@ -55,15 +59,43 @@ public class Main {
 	}
 
 	private static void analyze(List<Lexeme> lexemes, Input input) {
+		System.out.println("Analyzing the character pattern...");
 		TokenBase tokenBase = new TokenBase(lexemes);
 		AnalyzerFactory analyzerFactory = new AnalyzerFactory(input);
 		Analyzer analyzer = analyzerFactory.getAnalyzerForToken(tokenBase.getLexeme().getTokenType());
 		analyzer.analyze(tokenBase);
 	}
 
-	private static void parse(List<Lexeme> lexemes) {
+	private static Lexeme parse(List<Lexeme> lexemes) {
+		boxedPrint("Syntactical Analysis");
 		Parser parser = new ParserImpl();
-		boolean parse = parser.parse(lexemes);
-		System.out.println("Verdict = " + (parse ? "Valid JSON" : "Invalid JSON"));
+		Lexeme parsedJson = parser.parse(lexemes);
+		System.out.println("parsed Json = " + parsedJson.getValue());
+		return parsedJson;
+	}
+
+	private static void format(Lexeme lexeme) {
+		boxedPrint("Formatted Json");
+		FormatterFactory formatterFactory = new FormatterFactory();
+		String formattedJson = formatterFactory.getFormatterFromToken(lexeme.getTokenType()).format(lexeme, 1);
+		System.out.println(formattedJson);
+	}
+
+	private static void boxedPrint(String printStatement) {
+		printStatement = "  " + printStatement + "  ";
+		StringBuilder stringBuilder = new StringBuilder();
+		int length = printStatement.length();
+		stringBuilder.append('+')
+				.append("-".repeat(length))
+				.append('+');
+		stringBuilder.append("\n")
+				.append('|')
+				.append(printStatement)
+				.append('|');
+		stringBuilder.append("\n")
+				.append('+')
+				.append("-".repeat(length))
+				.append('+');
+		System.out.println(stringBuilder);
 	}
 }

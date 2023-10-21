@@ -5,6 +5,7 @@
 
 package com.nagendar.learning.parser;
 
+import com.nagendar.learning.exception.BaseException;
 import com.nagendar.learning.exception.IllegalSymbolFoundException;
 import com.nagendar.learning.lexer.Lexeme;
 import com.nagendar.learning.lexer.tokens.*;
@@ -13,7 +14,7 @@ import java.util.*;
 
 public class ParserImpl implements Parser {
 	@Override
-	public boolean parse(List<Lexeme> lexemes) {
+	public Lexeme parse(List<Lexeme> lexemes) {
 		Stack<Lexeme> symbols = new Stack<>();
 		for (int i = 0; i < lexemes.size(); i++) {
 			if (lexemes.get(i).getTokenType() == SquareBracket.RIGHT_SQUARE_BRACKET) {
@@ -41,7 +42,7 @@ public class ParserImpl implements Parser {
 						rightSquareBracket.getEnd()));
 			} else if (lexemes.get(i).getTokenType() == Brace.RIGHT_BRACE) {
 				Lexeme rightBrace = lexemes.get(i);
-				Map<String, Object> lexemeMap = new LinkedHashMap<>();
+				Map<String, Lexeme> lexemeMap = new LinkedHashMap<>();
 				while (!symbols.isEmpty() &&
 						symbols.peek().getTokenType() != Brace.LEFT_BRACE) {
 					if (symbols.peek().getTokenType() == Comma.COMMA) {
@@ -54,7 +55,7 @@ public class ParserImpl implements Parser {
 					throw new IllegalSymbolFoundException("JSON cannot be parsed: Expected {, Found end of the string");
 				}
 				Lexeme leftBrace = symbols.pop();
-				Map<String, Object> correctMap = reverseMap(lexemeMap);
+				Map<String, Lexeme> correctMap = reverseMap(lexemeMap);
 				symbols.push(new Lexeme(DataType.OBJECT, correctMap,
 						leftBrace.getStart(),
 						rightBrace.getEnd()));
@@ -63,14 +64,13 @@ public class ParserImpl implements Parser {
 				symbols.push(lexemes.get(i));
 			}
 		}
-		if (symbols.size() == 1) {
-			Lexeme jsonObject = symbols.peek();
-			System.out.println("jsonCorrect = " + jsonObject.getValue());
+		if (symbols.size() != 1 ||
+				(symbols.get(0).getTokenType() != DataType.OBJECT &&
+				symbols.get(0).getTokenType() != DataType.ARRAY)) {
+			throw new BaseException(String.format("Invalid JSON: Expected base DataTypes are ARRAY or OBJECT, Found \"%s\"",
+					symbols.get(0).getTokenType()));
 		}
-		return symbols.size() == 1 && (
-				symbols.get(0).getTokenType() == DataType.OBJECT
-				|| symbols.get(0).getTokenType() == DataType.ARRAY
-		);
+		return symbols.get(0);
 	}
 
 	private List<Lexeme> handlePair (Stack<Lexeme> symbols) {
@@ -108,10 +108,10 @@ public class ParserImpl implements Parser {
 		return false;
 	}
 
-	private Map<String, Object> reverseMap(Map<String, Object> original) {
+	private Map<String, Lexeme> reverseMap(Map<String, Lexeme> original) {
 		List<String> reverseOrderKeys = new ArrayList<>(original.keySet());
 		Collections.reverse(reverseOrderKeys);
-		Map<String, Object> jsonCorrect = new LinkedHashMap<>();
+		Map<String, Lexeme> jsonCorrect = new LinkedHashMap<>();
 		reverseOrderKeys.forEach(key -> jsonCorrect.put(key, original.get(key)));
 		return jsonCorrect;
 	}
