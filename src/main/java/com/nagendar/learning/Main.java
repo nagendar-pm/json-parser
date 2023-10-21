@@ -16,21 +16,19 @@ import com.nagendar.learning.parser.ParserImpl;
 import com.nagendar.learning.parser.TokenBase;
 import com.nagendar.learning.parser.analyzer.Analyzer;
 import com.nagendar.learning.parser.analyzer.AnalyzerFactory;
+import com.nagendar.learning.utils.FileUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-		String dir = "/Users/pagidimarrinagendar/Documents/My/java-projects/coding-challenges/json-parser/resources";
-		Set<String> inputFiles = listFilesUsingFilesList(dir);
+		String dir = "resources";
+		Set<String> inputFiles = FileUtils.listFilesUsingFilesList(FileUtils.toAbsolutePath(dir));
 		for (String inputFile : inputFiles) {
 			Path file = Path.of(inputFile);
 			String fileContent = Files.readString(file);
@@ -39,15 +37,6 @@ public class Main {
 			List<Lexeme> lexemes = tokenize(fileContent);
 			analyze(lexemes, new Input(fileContent));
 			parse(lexemes);
-		}
-	}
-
-	private static Set<String> listFilesUsingFilesList(String dir) throws IOException {
-		try (Stream<Path> stream = Files.list(Paths.get(dir))) {
-			return stream
-					.filter(file -> !Files.isDirectory(file))
-					.map(Path::toString)
-					.collect(Collectors.toSet());
 		}
 	}
 
