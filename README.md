@@ -45,7 +45,7 @@ The DFA for the analyzer of JSON is as below: <br>
 ## Test
 The output dump when tested looks like below:
 ```commandline
-Working on /Users/pagidimarrinagendar/Documents/My/java-projects/coding-challenges/json-parser/resources/input.txt
+Working on resources/input.txt
 fileContent
 {
     "key1" : "value1","key2" : "value2","key3" : {"key31" : "value31"},"key4" : [123, 345.78, 13.45e90, -345.909, +245],
