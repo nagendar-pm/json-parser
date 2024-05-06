@@ -10,11 +10,19 @@ import com.nagendar.learning.lexer.tokenizer.TokenizerFactory;
 import com.nagendar.learning.lexer.tokens.*;
 
 public class LexerImpl implements Lexer {
-	private final Input input;
+	private Input input;
 	private final TokenizerFactory tokenizerFactory;
+
+	public LexerImpl(TokenizerFactory tokenizerFactory) {
+		this.tokenizerFactory = tokenizerFactory;
+	}
 
 	public LexerImpl(String inputString, TokenizerFactory tokenizerFactory) {
 		this.tokenizerFactory = tokenizerFactory;
+		this.input = new Input(inputString);
+	}
+
+	public void setInput(String inputString) {
 		this.input = new Input(inputString);
 	}
 
