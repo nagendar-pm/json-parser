@@ -3,10 +3,8 @@
  * @createdAt: 21/04/24 11:10 pm
  */
 
-package com.nagendar.learning;
+package com.nagendar.learning.lexer;
 
-import com.nagendar.learning.lexer.Lexeme;
-import com.nagendar.learning.lexer.LexerImpl;
 import com.nagendar.learning.lexer.tokenizer.TokenizerFactory;
 import com.nagendar.learning.lexer.tokens.*;
 import org.junit.jupiter.api.Assertions;
