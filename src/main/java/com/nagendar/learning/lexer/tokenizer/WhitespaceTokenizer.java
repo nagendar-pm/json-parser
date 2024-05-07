@@ -35,7 +35,7 @@ public class WhitespaceTokenizer implements Tokenizer {
 		int start = input.getIndex();
 		int index = start;
 		String inputString = input.getInput();
-		while (validWhiteSpaces.contains(inputString.charAt(index))) {
+		while (index < inputString.length() && validWhiteSpaces.contains(inputString.charAt(index))) {
 			index++;
 		}
 		input.setIndex(index);
