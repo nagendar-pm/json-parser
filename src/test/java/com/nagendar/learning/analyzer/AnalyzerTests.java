@@ -35,9 +35,9 @@ public class AnalyzerTests {
 		}
 		TokenBase tokenBase = new TokenBase(lexemes);
 		Analyzer analyzer = analyzerFactory.getAnalyzerForToken(tokenBase.getLexeme().getTokenType());
-		Assertions.assertThrows(IllegalTokenFoundException.class ,
-				() -> analyzer.analyze(tokenBase),
-		"Expected :, }, ,, ], Found no token");
+		Throwable exception = Assertions.assertThrows(IllegalTokenFoundException.class ,
+				() -> analyzer.analyze(tokenBase));
+		Assertions.assertTrue(exception.getMessage().startsWith("Expected ], ,, :, }, Found no token"));
 	}
 
 	@Test
@@ -54,9 +54,9 @@ public class AnalyzerTests {
 		}
 		TokenBase tokenBase = new TokenBase(lexemes);
 		Analyzer analyzer = analyzerFactory.getAnalyzerForToken(tokenBase.getLexeme().getTokenType());
-		Assertions.assertThrows(IllegalTokenFoundException.class ,
-				() -> analyzer.analyze(tokenBase),
-		"Expected :, }, ,, ], Found \"value2} : At 23-th character \"e1\",\"key2\"\"value2}\"");
+		Throwable exception = Assertions.assertThrows(IllegalTokenFoundException.class ,
+				() -> analyzer.analyze(tokenBase));
+		Assertions.assertTrue(exception.getMessage().startsWith("Expected ], ,, :, }, Found \"value2\""));
 	}
 
 	@Test
@@ -73,9 +73,9 @@ public class AnalyzerTests {
 		}
 		TokenBase tokenBase = new TokenBase(lexemes);
 		Analyzer analyzer = analyzerFactory.getAnalyzerForToken(tokenBase.getLexeme().getTokenType());
-		Assertions.assertThrows(IllegalTokenFoundException.class ,
-				() -> analyzer.analyze(tokenBase),
-		"Expected ], ,, }, :, Found \"key2\" : At 16-th character \"\":\"value1\"\"key2\":\"va\"");
+		Throwable exception = Assertions.assertThrows(IllegalTokenFoundException.class ,
+				() -> analyzer.analyze(tokenBase));
+		Assertions.assertTrue(exception.getMessage().startsWith("Expected ], ,, :, }, Found \"key2\""));
 	}
 
 	@Test
@@ -92,9 +92,9 @@ public class AnalyzerTests {
 		}
 		TokenBase tokenBase = new TokenBase(lexemes);
 		Analyzer analyzer = analyzerFactory.getAnalyzerForToken(Brace.LEFT_BRACE);
-		Assertions.assertThrows(IllegalTokenFoundException.class ,
-				() -> analyzer.analyze(tokenBase),
-				"Expected {, Found \"key1\"");
+		Throwable exception = Assertions.assertThrows(IllegalTokenFoundException.class ,
+				() -> analyzer.analyze(tokenBase));
+		Assertions.assertTrue(exception.getMessage().startsWith("Expected {, Found \"key1\""));
 	}
 
 	@Test
@@ -111,9 +111,9 @@ public class AnalyzerTests {
 		}
 		TokenBase tokenBase = new TokenBase(lexemes);
 		Analyzer analyzer = analyzerFactory.getAnalyzerForToken(tokenBase.getLexeme().getTokenType());
-		Assertions.assertThrows(IllegalTokenFoundException.class ,
-				() -> analyzer.analyze(tokenBase),
-				"Expected :, ,, }, ], Found no token");
+		Throwable exception = Assertions.assertThrows(IllegalTokenFoundException.class ,
+				() -> analyzer.analyze(tokenBase));
+		Assertions.assertTrue(exception.getMessage().startsWith("Expected ], ,, :, }, Found no token"));
 	}
 
 	@Test
@@ -130,9 +130,9 @@ public class AnalyzerTests {
 		}
 		TokenBase tokenBase = new TokenBase(lexemes);
 		Analyzer analyzer = analyzerFactory.getAnalyzerForToken(SquareBracket.LEFT_SQUARE_BRACKET);
-		Assertions.assertThrows(IllegalTokenFoundException.class ,
-				() -> analyzer.analyze(tokenBase),
-				"Expected [, Found \"key1\"");
+		Throwable exception = Assertions.assertThrows(IllegalTokenFoundException.class ,
+				() -> analyzer.analyze(tokenBase));
+		Assertions.assertTrue(exception.getMessage().startsWith("Expected [, Found \"key1\""));
 	}
 
 	@Test
@@ -149,8 +149,8 @@ public class AnalyzerTests {
 		}
 		TokenBase tokenBase = new TokenBase(lexemes);
 		Analyzer analyzer = analyzerFactory.getAnalyzerForToken(tokenBase.getLexeme().getTokenType());
-		Assertions.assertThrows(IllegalTokenFoundException.class ,
-				() -> analyzer.analyze(tokenBase),
-				"Expected :, ,, }, ], Found no token");
+		Throwable exception = Assertions.assertThrows(IllegalTokenFoundException.class ,
+				() -> analyzer.analyze(tokenBase));
+		Assertions.assertTrue(exception.getMessage().startsWith("Expected ], ,, :, }, Found no token"));
 	}
 }
